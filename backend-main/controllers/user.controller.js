@@ -36,9 +36,9 @@ const signUp = async(req,res,next)=>{
             res.statusCode = 409
             throw new Error("User with given email already exists")
         }
-        if(req.profilePic.beginsWiith("http://")
+        if(req.profilePic&&(req.profilePic.startsWith("http://")
            ||req.profilePic.startsWith("www.")
-           ||req.profilePic.startsWith('https://')) profilePic = req.profilePic
+           ||req.profilePic.startsWith('https://'))) profilePic = req.profilePic
         else profilePic = req.file.id
         
         const token = jwt.sign({...req.body,profilePic:profilePic},process.env.JWT_TEMP_SECRET,{ expiresIn: Number(process.env.JWT_TEMP_EXPIRE) })
