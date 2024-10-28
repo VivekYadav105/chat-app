@@ -35,7 +35,7 @@ app.use(errorMiddleware)
 
 app.get('/',(req,res,next)=>{
     try{
-        res.send("hello world")
+        res.send(`<a href='${process.env.NODE_FRONTEND_URL}'>Click here</> to visit frontend`)
     }catch(err){
         res.send(err)
     }
