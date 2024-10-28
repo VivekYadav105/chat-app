@@ -9,7 +9,7 @@ const { getGFS,getFileUrl } = require('./storage')
 function intializeSocketServer(server){
     
     const io = new Server(server,{cors:{
-        origin:"*",
+        origin:process.env.NODE_FRONTEND_URL,
         methods: ["GET", "POST"],
         transports: ['websocket', 'polling'],
         credentials: true
