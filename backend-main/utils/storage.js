@@ -42,7 +42,7 @@ function getGFS() {
 
 async function getFileUrl(fileId,type='image'){
     const gfs = getGFS()
-    if(fileId.beginsWidth('https://')||fileId.beginsWidth('http://')||fileId.beginsWidth('www.')) return fileId
+    if(fileId.startsWith('https://')||fileId.startsWith('http://')||fileId.startsWith('www.')) return fileId
     
     const id = new mongoose.Types.ObjectId(fileId)
     const files = await gfs.find({_id:id}).toArray()
