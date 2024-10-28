@@ -9,6 +9,7 @@ const apiInstance = axios.create({
     //     'Access-Control-Allow-Methods': 'GET, POST, PUT', 
     //     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     //   }
+    withCredentials: true,
 })
 
 
