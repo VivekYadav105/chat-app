@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+    input:-webkit-autofill+label,
+    input:-webkit-autofill:hover+label,
+    input:-webkit-autofill:focus+label,
+    textarea:-webkit-autofill+label,
+    textarea:-webkit-autofill:hover+label,
+    textarea:-webkit-autofill:focus+label,
+    select:-webkit-autofill+label,
+    select:-webkit-autofill:hover+label,
+    select:-webkit-autofill:focus +label{
+     @apply translate-x-[-5px] translate-y-[-7.5px] text-sm bg-inherit text-yellow-600
+    }    
+
