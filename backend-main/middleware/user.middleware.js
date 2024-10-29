@@ -13,12 +13,12 @@ const authUser = async(req,res,next)=>{
             res.statusCode = 400
             throw new Error("Invalid token")            
         }
-        const {userId} = jwt.decode(token,{complete:true}).payload
-        if(!userId.match(regex)){
+        const decodedUser = jwt.decode(token,{complete:true}).payload
+        if(!decodedUser._id.match(regex)){
             res.statusCode = 400
             throw new Error("Invalid UserId")
         }
-        const user = userModel.findById(userId)
+        const user = userModel.findById(decodedUser._id)
         req.user = await user.select('_id fname lname userName email isVerified')
         next()
     }

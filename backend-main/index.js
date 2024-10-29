@@ -18,11 +18,11 @@ const app = express()
 const port = process.env.PORT || 4000
 
 app.use(express.json())
+app.options('*', cors());
 app.use(cors({
     origin:process.env.NODE_FRONTEND_URL,
     methods: ['GET', 'POST', 'PUT','DELETE'],
     allowedHeaders: ['Content-Type','Authorization'],
-    credentials: true
 }))
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended:true}))

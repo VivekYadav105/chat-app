@@ -1,5 +1,15 @@
+import { useEffect } from "react";
+
 const MessagePrimary = (props)=>{
     const type = props.type||"primary"
+    console.log(JSON.stringify(props));
+
+    const showEnlargedImage = ()=>{
+
+    }
+
+    useEffect(()=>{},[props])
+    
     return(
     <div className={`message-wrapper w-full py-2`}>
         <div className={`message border-0 float p-1 flex items-center ${type=="primary"?"":"flex-row-reverse"}`}>
@@ -7,15 +17,19 @@ const MessagePrimary = (props)=>{
                 <img src={props.image} alt="" className={`${type=="primary"?"bg-gray-600":"bg-slate-400"} rounded-full w-[30px] h-[30px] border-2 border-green-200`} />
                 <span className={`${type=="primary"?"right-2 ":"left-2"} bottom-2 timestamp text-xs text-light-text`}>{props.messageTime}</span>    
             </div>
-            <p className={`relative message-text text-justify px-5 py-2 ${type=="primary"?"primary bg-primary":"secondary bg-dark"} mx-4 rounded-2xl shadow-md before:absolute relative max-w-[300px] text-cream`}>
-                {props.message}
-            </p>
-            {props.files.map(ele=>{
-                <article>
-                    <img src={ele} alt="" width={40} height={50} className="bg-dark rounded-lg"/>
-                </article>
-            })}
-        </div>      
+                <p className={`relative message-text text-justify px-5 py-2 ${type=="primary"?"primary bg-primary":"secondary bg-dark"} mx-4 rounded-2xl shadow-md before:absolute relative max-w-[300px] text-cream`}>
+                    {props.message}
+                </p>
+        </div>     
+        {props.files&&(
+            <div className="ps-16 flex gap-2 py-2">
+                {props.files.map((ele,index)=>{
+                    return <button onClick={showEnlargedImage} key={index}>
+                        <img src={ele} alt="" width={40} height={50} className="bg-dark rounded-lg"/>
+                    </button>
+                })}
+            </div>
+        )}
       </div>
     )
 }

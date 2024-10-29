@@ -41,8 +41,6 @@ function useSocket(user) {
             socketIo.on("update-message-with-files", (data) => {
                 console.log("inside update-message-with-files");
                 
-                console.log(data);
-
             });
 
             socketIo.on("error", (error) => {

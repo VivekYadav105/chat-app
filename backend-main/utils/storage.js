@@ -6,13 +6,13 @@ const crypto = require('crypto')
 const path = require('path')
 const dotenv = require('dotenv')
 const { documentTypes,imageTypes } = require('./filetypes')
+const { log } = require('console')
 
 dotenv.config()
 
 
 let gfs = null
 conn.once('open',()=>{
-    console.log('Database bucket session created');
     gfs = new mongoose.mongo.GridFSBucket(conn.db, {
         bucketName: 'files',
     });
@@ -41,6 +41,7 @@ function getGFS() {
 }
 
 async function getFileUrl(fileId,type='image'){
+    console.log(fileId); 
     const gfs = getGFS()
     if(fileId.startsWith('https://')||fileId.startsWith('http://')||fileId.startsWith('www.')) return fileId
     

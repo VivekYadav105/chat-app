@@ -57,7 +57,6 @@ function CreateGroup(props){
                 <ButtonAmetyst disabled={props.selectedContacts.length===0} type="submit">Create Group</ButtonAmetyst>
             </div>
             </form>
-            
         </section>
     )
 }

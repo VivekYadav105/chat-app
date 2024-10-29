@@ -38,6 +38,9 @@ function ChatModal(){
                         </article>
                     )
                 }):<h1 className='text-primary border-dashed w-full text-sm font-bold text-center'>select contacts to create group</h1>}
+                <div className='pt-4 flex justify-center w-full'>
+                    <ButtonPrimary disabled={selectedContacts.length===0} onClick={()=>{setGroupPane(true)}}>Create Group</ButtonPrimary>
+                </div>
             </div>
             <div className='flex flex-col gap-2 px-3 h-[300px] mt-6'>
                 <h1 className='border-b-2 uppercase font-mono mx-5 px-2 text-white'>Contacts</h1>
@@ -45,9 +48,6 @@ function ChatModal(){
                     (i,index)=><ContactTile {...i} onClick={()=>updateSelectedMembers(i._id)}/>
                     ):<h1 className='text-primary text-center'>No contacts here</h1>
             }
-            </div>
-            <div className='pt-4 flex justify-center'>
-                <ButtonPrimary disabled={selectedContacts.length===0} onClick={()=>{setGroupPane(true)}}>Create Group</ButtonPrimary>
             </div>
             {groupPane&&<CreateGroup selectedContacts={selectedContacts} setGroupPane={setGroupPane} updateSelectedMembers={updateSelectedMembers} />}
         </>

@@ -29,7 +29,7 @@ const UploadModal = (props)=>{
         <div className="file-upload-modal shadow-lg shadow-dark absolute top-0 left-0 -translate-y-full bg-dark rounded w-[300px] h-[400px]">
             <div className="relative w-full">
                 <input multiple onChange={props.handleFileUpload} type="file" accept="image/*, .pdf, .docx, .doc" className="bg-primary file-input text-dark w-full rounded-lg p-4"/>
-                <button onClick={()=>{props.setUploadModal(false)}} className="close-btn w-5 hover:bg-secondary rounded-full borderdark duration-200 absolute right-0 bg-white top-1/2 -translate-y-1/2 -translate-x-1/2">
+                <button onClick={handleClose} className="close-btn w-5 hover:bg-secondary rounded-full borderdark duration-200 absolute right-0 bg-white top-1/2 -translate-y-1/2 -translate-x-1/2">
                     <img src="/icons/close.svg" alt="x" className="rounded-full" />
                 </button>
             </div>
@@ -40,7 +40,7 @@ const UploadModal = (props)=>{
                         <button className="ms-auto hover:border-dark absolute top-2 right-2 z-10 hover:shadow-md hover:bg-dark duration-200 rounded-full" onClick={()=>{props.setSelectedFiles((prev)=>(prev.filter(ele=>ele.name!=i.name)))}}>
                             <MdClose size={20}/>
                         </button>
-                        {i.type.includes("image")&&<img src={URL.createObjectURL(i)} className="h-10 rounded-full" alt='' />}
+                        {i.type.includes("image")&&<img src={URL.createObjectURL(i)} width={40} height={50} className="h-10 rounded-full" alt='' />}
                         {i.type.includes('application')&&<MdDocumentScanner className="m-auto" size={50}/>}
                         <span className="whitespace-nowrap keep-all">
                             {i.name&&i.name.length>20&&i.name.substring(0,8)+'...'+i.name.substring(i.name.length-10)}

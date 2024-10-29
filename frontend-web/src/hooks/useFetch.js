@@ -9,7 +9,6 @@ const apiInstance = axios.create({
     //     'Access-Control-Allow-Methods': 'GET, POST, PUT', 
     //     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     //   }
-    withCredentials: true,
 })
 
 
@@ -24,17 +23,15 @@ function useFetch({url,method,postData,config={}},dependencies=[],callback){
     useEffect(()=>{
         let isMounted = true;
         if (isMounted && dependencies.every(dep => dep !== null && dep !== undefined && Object.keys(dep).length !== 0 && dep.token !== '')){
-            console.log("called")
             async function fetchData(){
                 let res;
                 setLoading(true)
                 try{
-                    if(method==="post"){
+                    if(method==="post")
                         res = await apiInstance.post(url,postData)
-                    }
-                    else if(method==="get"){
+                    else if(method==="get")
                         res = await apiInstance.get(url)
-                    }
+                    
                     const {data} = res
                     setData(data)
                     if(callback && typeof callback == "function"){
@@ -42,8 +39,9 @@ function useFetch({url,method,postData,config={}},dependencies=[],callback){
                         callback(data,error,loading)
                     }
                 }catch(err){     
+                    setLoading(false)
                     console.log(err)
-                    if(err.code=="ERR_NETWORK"){
+                    if(err.code==="ERR_NETWORK"){
                         setToastMsg({type:"error",message:"could not locate the server"})
                         return 
                     }           
@@ -59,6 +57,7 @@ function useFetch({url,method,postData,config={}},dependencies=[],callback){
             }    
             fetchData()
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[...dependencies])
     return [data,error,loading]
 }

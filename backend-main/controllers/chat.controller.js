@@ -18,17 +18,14 @@ const getChats = async(req,res,next)=>{
             let file = null
             let chatName = ele.chatName
             if(ele.groupPic){
-                const id = new mongoose.Types.ObjectId(ele.groupPic) 
-                file = await getFileUrl(id)
+                file = await getFileUrl(ele.groupPic)
             }else {
                 const memoizedPics = {}
                 const sender = ele.users.filter(ele=>ele._id.toString()!=req.user._id.toString())[0]
                 const profilePic = sender.profilePic
                 if(!chatName) chatName = sender.userName
-                console.log
                 if(!memoizedPics[profilePic]){
-                    const parsedImageId = new mongoose.Types.ObjectId(profilePic)
-                    memoizedPics[profilePic] = await getFileUrl(parsedImageId)
+                    memoizedPics[profilePic] = await getFileUrl(profilePic)
                 }
                 file = memoizedPics[profilePic]
             }
@@ -93,24 +90,31 @@ const sendMessage = async (req,res,next)=>{
     try{
         const {chatId,messageContent} = req.body
         const senderId = req.user._id
+        console.log(senderId);
+        
         let chat,message;
         if(!chatId){
             res.statusCode = 400
             throw new Error("No chatId to send the message")
         }
         chat = await chatModel.findById(chatId)
+        
         if(!chat) {
             res.statusCode = 400
             throw new Error("send invite to chat")
         }
+
         const fileIds = req.files?req.files.map(file=>file.id):[]
+
         message = await messageModel
         .create({content:messageContent,chat:chat._id,sender:senderId,files:fileIds})
         message = await message.populate("sender","userName profilePic")
         chat.lastMessage = message._id
+        console.log('-')
         await chat.save()
-        const parsedImageId = new mongoose.Types.ObjectId(message.sender.profilePic)
-        const profilePic = await getFileUrl(parsedImageId)
+        console.log("--")
+        const profilePic = await getFileUrl(message.sender.profilePic)
+        console.log("---")
         const parsedMessage = {
             ...message._doc,
             sender: {
@@ -118,11 +122,13 @@ const sendMessage = async (req,res,next)=>{
                 profilePic: profilePic
             }
         }
-        console.log(parsedMessage);
+        console.log("parsed-message:",parsedMessage);
+        console.log(req.type);
         if(req.type=="webSocket") return {status:201,message:"message delivered successfully",response:{chat,message:parsedMessage}}
         return res.json({status:201,message:"message delivered successfully",response:{chat,message:parsedMessage}})    
     }
     catch(err){
+        console.log(err);
         if(req.type!="webSocket") next(err)
     }
 }
@@ -158,11 +164,11 @@ const getMessages = async (req,res,next)=>{
         const parsedMessages = await Promise.all(messages.map(async(ele)=>{
             const memoizedPics = {}
             const files = await Promise.all(ele.files.map(async(file)=>{
-                const fileUrl = getFileUrl(new mongoose.Types.ObjectId(file))
+                const fileUrl = getFileUrl(file.toString())
                 return fileUrl
             }))
             if(!memoizedPics[ele.sender.profilePic]){
-                const id = new mongoose.Types.ObjectId(ele.sender.profilePic)
+                const id = ele.sender.profilePic
                 memoizedPics[ele.sender.profilePic] = await getFileUrl(id)    
             }
             return JSON.parse(JSON.stringify({

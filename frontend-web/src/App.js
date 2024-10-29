@@ -45,6 +45,15 @@ function App() {
                         </ProtectedRoute>
                       }>  
                     </Route>
+                    <Route 
+                    element={
+                      <ProtectedRoute protectType={user.token}>
+                          <ChatPage chatType={chatType}/>
+                      </ProtectedRoute>
+                    }
+                    path='/chat/:id'
+                    >
+                    </Route>
                     <Route path='/auth' element={user.token?<Navigate to={"/chat"}></Navigate>:<Auth></Auth>}></Route>  
                     <Route path='/forgot' element={user.token?<Navigate to={"/chat"} replace></Navigate>:<Reset></Reset>}></Route>                
                 </Routes>

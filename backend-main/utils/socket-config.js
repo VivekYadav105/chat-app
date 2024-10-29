@@ -29,6 +29,8 @@ function intializeSocketServer(server){
 
     io.on("connection",(socket)=>{
         let req = socket.request;
+        console.log("socket user",socket.userId);
+        
         req.user = {_id:socket.userId}
         let res = {statusCode:'',message:'',response:''}
         req.type = 'webSocket';
@@ -39,6 +41,7 @@ function intializeSocketServer(server){
         socket.on("message",async(data,callback)=>{
             req.body = data
             res = await sendMessage(req,res)
+            console.log(res);
             if(res.status==201&&callback) callback({messageId:res.response.message._id})
             else socket.emit("message_error")
         })
@@ -59,10 +62,10 @@ function intializeSocketServer(server){
             console.log("inside final socket");
             const { messageId, fileIds } = data;
             const message = await messageModel.findByIdAndUpdate(messageId, { $set: { files:fileIds } }).populate('sender','userName email profilePic _id').lean();
-            const parsedImageId = new mongoose.Types.ObjectId(message.sender.profilePic)
+            const parsedImageId = message.sender.profilePic
             const profilePic = await getFileUrl(parsedImageId)
             const files = await Promise.all(fileIds.map(async(ele)=>{
-                const id = new mongoose.Types.ObjectId(ele)
+                const id = ele
                 const file = await getFileUrl(id)
                 return file
             }))
